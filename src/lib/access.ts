@@ -3,7 +3,7 @@ import { getTG, isInTelegram } from "./tg";
 // Hard allowlist: only these Telegram user IDs can use the app inside Telegram.
 // 0 = "not configured yet — accept any user on first launch and prompt to lock".
 // Replace with your real numeric Telegram user ID before deploying.
-export const ALLOWED_USER_IDS: number[] = [288813512, 6490527884];
+export const ALLOWED_USER_IDS: number[] = [288813512, 6490527884, 406639147];
 
 export type AccessState =
   | { kind: "dev" } // running outside Telegram (local browser)
