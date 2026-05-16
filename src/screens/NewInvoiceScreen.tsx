@@ -460,19 +460,19 @@ export function NewInvoiceScreen({
             </Frame>
 
             {pdfUrl ? (
-              <>
-                <Frame title="preview" accent="violet">
-                  <iframe
-                    src={pdfUrl}
-                    title="invoice preview"
-                    className="block w-full bg-white rounded"
-                    style={{ aspectRatio: "400 / 720" }}
-                  />
-                </Frame>
+              <div className="flex flex-col gap-3">
                 <Button variant="primary" block onClick={sendInvoice}>
                   📤 send invoice
                 </Button>
-              </>
+                <a
+                  href={pdfUrl}
+                  target="_blank"
+                  rel="noreferrer"
+                  className="inline-flex items-center justify-center gap-2 px-3 py-2 w-full bg-transparent hover:bg-[var(--color-ink-2)] text-[var(--color-fg-2)] hover:text-[var(--color-fg-0)] border border-[var(--color-ink-3)] rounded transition-colors text-[11px]"
+                >
+                  ↗ open pdf preview
+                </a>
+              </div>
             ) : pdfError ? (
               <div className="text-[11px] text-[var(--color-rose)] px-3 py-2 border border-[#5b1f29] rounded">
                 pdf error: {pdfError}
