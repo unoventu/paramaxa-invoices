@@ -51,6 +51,7 @@ export function NewInvoiceScreen({
   const [lastIssued, setLastIssued] = useState<Invoice | null>(null);
   const [pdfError, setPdfError] = useState<string | null>(null);
   const [pdfUrl, setPdfUrl] = useState<string | null>(null);
+  const [pdfBlob, setPdfBlob] = useState<Blob | null>(null);
   const pdfUrlRef = useRef<string | null>(null);
 
   const selected = clients.find((c) => c.id === clientId);
@@ -142,6 +143,7 @@ export function NewInvoiceScreen({
     if (pdfUrlRef.current) URL.revokeObjectURL(pdfUrlRef.current);
     pdfUrlRef.current = url;
     setPdfUrl(url);
+    setPdfBlob(blob);
 
     await onSaveInvoice(invoice);
     await onAdvanceNumber();
@@ -153,6 +155,50 @@ export function NewInvoiceScreen({
       if (pdfUrlRef.current) URL.revokeObjectURL(pdfUrlRef.current);
     };
   }, []);
+
+  function pdfFileName(inv: Invoice): string {
+    return `${inv.number}-${inv.clientSnapshot.name.replace(/\s+/g, "-")}.pdf`;
+  }
+
+  async function sendInvoice() {
+    if (!lastIssued || !pdfBlob) return;
+    setPdfError(null);
+    const filename = pdfFileName(lastIssued);
+    const file = new File([pdfBlob], filename, { type: "application/pdf" });
+
+    // Web Share API w/ files works on iOS Safari (incl. inside Telegram),
+    // modern Android, and macOS Safari 16.4+. It opens the system share
+    // sheet so the user picks Telegram → chat → file is sent natively.
+    const canShareFiles =
+      typeof navigator !== "undefined" &&
+      typeof navigator.canShare === "function" &&
+      navigator.canShare({ files: [file] });
+
+    if (canShareFiles && navigator.share) {
+      try {
+        await navigator.share({
+          files: [file],
+          title: lastIssued.number,
+          text: `${lastIssued.number} · ${fmtZAR(lastIssued.total)}`,
+        });
+        haptic("ok");
+        return;
+      } catch (e) {
+        // User cancelled the share sheet — not an error
+        if ((e as Error)?.name === "AbortError") return;
+        console.warn("[share] failed, falling back to download", e);
+      }
+    }
+
+    // Fallback: native download via <a download>
+    const a = document.createElement("a");
+    a.href = pdfUrlRef.current ?? URL.createObjectURL(pdfBlob);
+    a.download = filename;
+    document.body.appendChild(a);
+    a.click();
+    a.remove();
+    haptic("ok");
+  }
 
   // ── PICK ────────────────────────────────────────────────────────────────
   if (mode === "pick-client") {
@@ -422,21 +468,9 @@ export function NewInvoiceScreen({
                     className="w-full h-[480px] bg-white rounded"
                   />
                 </Frame>
-                <a
-                  href={pdfUrl}
-                  download={`${lastIssued.number}-${lastIssued.clientSnapshot.name.replace(/\s+/g, "-")}.pdf`}
-                  className="inline-flex items-center justify-center gap-2 px-3 py-2 w-full bg-[var(--color-violet-dim)]/30 hover:bg-[var(--color-violet-dim)]/55 text-[var(--color-violet)] border border-[var(--color-violet-dim)] hover:border-[var(--color-violet)] rounded transition-colors text-[12px]"
-                >
-                  ⤓ download pdf
-                </a>
-                <a
-                  href={pdfUrl}
-                  target="_blank"
-                  rel="noreferrer"
-                  className="inline-flex items-center justify-center gap-2 px-3 py-2 w-full bg-transparent hover:bg-[var(--color-ink-2)] text-[var(--color-fg-1)] hover:text-[var(--color-fg-0)] border border-[var(--color-ink-3)] hover:border-[var(--color-ink-5)] rounded transition-colors text-[12px]"
-                >
-                  ↗ open in new tab
-                </a>
+                <Button variant="primary" block onClick={sendInvoice}>
+                  📤 send invoice
+                </Button>
               </>
             ) : pdfError ? (
               <div className="text-[11px] text-[var(--color-rose)] px-3 py-2 border border-[#5b1f29] rounded">
