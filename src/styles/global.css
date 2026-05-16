@@ -1,0 +1,127 @@
+@import "tailwindcss";
+
+@theme {
+  --font-mono: "JetBrains Mono", ui-monospace, SFMono-Regular, Menlo, monospace;
+  --font-sans: "JetBrains Mono", ui-monospace, SFMono-Regular, Menlo, monospace;
+
+  /* surfaces */
+  --color-ink-0: #08080a;
+  --color-ink-1: #0e0e12;
+  --color-ink-2: #14141a;
+  --color-ink-3: #1c1c24;
+  --color-ink-4: #262631;
+  --color-ink-5: #3a3a48;
+
+  /* text */
+  --color-fg-0: #ededf2;
+  --color-fg-1: #b8b8c4;
+  --color-fg-2: #7a7a89;
+  --color-fg-3: #4e4e5c;
+
+  /* accents */
+  --color-violet: #b794f4;
+  --color-violet-strong: #9f7aea;
+  --color-violet-dim: #553c8b;
+
+  --color-mint: #6ee7b7;
+  --color-mint-strong: #34d399;
+  --color-mint-dim: #2f6f55;
+
+  --color-amber: #fbbf24;
+  --color-amber-strong: #f59e0b;
+  --color-amber-dim: #92580d;
+
+  --color-rose: #fb7185;
+}
+
+@layer base {
+  *,
+  *::before,
+  *::after {
+    box-sizing: border-box;
+  }
+
+  html,
+  body,
+  #root {
+    height: 100%;
+    margin: 0;
+    padding: 0;
+  }
+
+  html {
+    color-scheme: dark;
+    background: var(--color-ink-0);
+    -webkit-text-size-adjust: 100%;
+  }
+
+  body {
+    font-family: var(--font-mono);
+    font-feature-settings: "ss01", "cv11", "zero";
+    font-size: 14px;
+    line-height: 1.5;
+    color: var(--color-fg-0);
+    background:
+      radial-gradient(1200px 600px at 80% -10%, rgba(183, 148, 244, 0.06), transparent 60%),
+      radial-gradient(900px 500px at -10% 110%, rgba(110, 231, 183, 0.05), transparent 55%),
+      var(--color-ink-0);
+    overscroll-behavior: none;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+  }
+
+  button {
+    font-family: inherit;
+    font-size: inherit;
+    color: inherit;
+    background: transparent;
+    border: 0;
+    padding: 0;
+    cursor: pointer;
+  }
+
+  input,
+  textarea,
+  select {
+    font-family: inherit;
+    font-size: inherit;
+    color: inherit;
+    background: transparent;
+    border: 0;
+    outline: 0;
+    padding: 0;
+  }
+
+  ::selection {
+    background: var(--color-violet-dim);
+    color: var(--color-fg-0);
+  }
+
+  ::-webkit-scrollbar {
+    width: 8px;
+    height: 8px;
+  }
+  ::-webkit-scrollbar-track {
+    background: transparent;
+  }
+  ::-webkit-scrollbar-thumb {
+    background: var(--color-ink-4);
+    border-radius: 2px;
+  }
+  ::-webkit-scrollbar-thumb:hover {
+    background: var(--color-ink-5);
+  }
+}
+
+@keyframes blink {
+  0%, 49% {
+    opacity: 1;
+  }
+  50%, 100% {
+    opacity: 0;
+  }
+}
+
+@utility blink {
+  animation: blink 1s steps(1) infinite;
+}
