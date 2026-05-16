@@ -38,8 +38,8 @@ export function Input({
       >
         {prefix && <span className="text-[var(--color-fg-2)] text-sm shrink-0">{prefix}</span>}
         <input
-          style={{ minWidth: 0, width: "100%" }}
-          className={`flex-1 placeholder:text-[var(--color-fg-3)] text-[14px] ${className}`}
+          style={{ minWidth: 0, width: "100%", fontSize: 16 }}
+          className={`flex-1 placeholder:text-[var(--color-fg-3)] ${className}`}
           {...rest}
         />
         {suffix && <span className="text-[var(--color-fg-2)] text-sm shrink-0">{suffix}</span>}

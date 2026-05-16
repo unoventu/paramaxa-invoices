@@ -11,6 +11,12 @@ type TGWebApp = {
   initDataUnsafe?: { user?: { id: number; first_name?: string; username?: string } };
   ready: () => void;
   expand: () => void;
+  isExpanded?: boolean;
+  isVerticalSwipesEnabled?: boolean;
+  disableVerticalSwipes?: () => void;
+  enableClosingConfirmation?: () => void;
+  requestFullscreen?: () => void;
+  lockOrientation?: () => void;
   colorScheme: "light" | "dark";
   themeParams: Record<string, string>;
   setHeaderColor?: (color: string) => void;
@@ -59,6 +65,10 @@ export function tgReady() {
   if (!tg) return;
   tg.ready();
   tg.expand();
+  // Disable Telegram's vertical swipes — they drag the WebView itself and
+  // make the page look like it's "extending past" the screen when the
+  // keyboard slides up. Available in Bot API 7.7+; safely ignored on older.
+  tg.disableVerticalSwipes?.();
   tg.setHeaderColor?.("#08080a");
   tg.setBackgroundColor?.("#08080a");
 }
