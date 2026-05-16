@@ -110,7 +110,7 @@ export default function App() {
   if (!loaded || !settings) return <FullScreenSpinner label="loading state" />;
 
   return (
-    <div className="min-h-dvh flex flex-col text-[14px]">
+    <div className="min-h-dvh flex flex-col text-[14px] w-full max-w-full overflow-x-hidden">
       <TopBar
         back={
           screen !== "home"
@@ -129,7 +129,7 @@ export default function App() {
         }
       />
 
-      <main className="flex-1 overflow-y-auto">
+      <main className="flex-1 overflow-y-auto overflow-x-hidden w-full max-w-full">
         <AnimatePresence mode="wait">
           <motion.div
             key={screen + (preselectClientId ?? "")}

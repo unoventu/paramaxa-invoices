@@ -33,7 +33,7 @@ export function HomeScreen({ clients, invoices, settings, onPickQuickTV, onPickC
   const nextNumber = formatInvoiceNumber(settings.invoicePrefix, settings.nextInvoiceNumber);
 
   return (
-    <div className="flex flex-col gap-4 p-4 pb-24 max-w-[640px] mx-auto">
+    <div className="flex flex-col gap-4 p-4 pb-24 w-full max-w-[640px] mx-auto">
       {/* Greeting / pulse */}
       <motion.div
         initial={{ opacity: 0 }}

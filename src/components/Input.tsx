@@ -27,7 +27,7 @@ export function Input({
       )}
       <div
         className={`
-          flex items-center gap-2 px-3 py-2.5 min-w-0 w-full
+          flex items-center gap-2 px-3 py-2.5 min-w-0 max-w-full overflow-hidden
           bg-[var(--color-ink-2)]
           border border-[var(--color-ink-3)]
           focus-within:border-[var(--color-violet)]
@@ -38,7 +38,8 @@ export function Input({
       >
         {prefix && <span className="text-[var(--color-fg-2)] text-sm shrink-0">{prefix}</span>}
         <input
-          className={`flex-1 min-w-0 w-full placeholder:text-[var(--color-fg-3)] text-[14px] ${className}`}
+          style={{ minWidth: 0, width: "100%" }}
+          className={`flex-1 placeholder:text-[var(--color-fg-3)] text-[14px] ${className}`}
           {...rest}
         />
         {suffix && <span className="text-[var(--color-fg-2)] text-sm shrink-0">{suffix}</span>}

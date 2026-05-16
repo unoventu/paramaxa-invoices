@@ -57,7 +57,7 @@ export function ClientsScreen({ clients, onSave, onDelete }: Props) {
   }
 
   return (
-    <div className="flex flex-col gap-3 p-4 pb-24 max-w-[640px] mx-auto">
+    <div className="flex flex-col gap-3 p-4 pb-24 w-full max-w-[640px] mx-auto">
       <div className="px-1">
         <div className="text-[var(--color-violet)] text-[11px] tracking-widest">/clients</div>
         <h1 className="mt-1 text-[22px] font-medium">
@@ -126,7 +126,7 @@ function ClientEditor({
   const isNew = !initial.name;
 
   return (
-    <div className="flex flex-col gap-3 p-4 pb-24 max-w-[640px] mx-auto">
+    <div className="flex flex-col gap-3 p-4 pb-24 w-full max-w-[640px] mx-auto">
       <div className="px-1">
         <div className="text-[var(--color-violet)] text-[11px] tracking-widest">
           /clients · {isNew ? "new" : "edit"}

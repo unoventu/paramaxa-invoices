@@ -18,7 +18,7 @@ export function HistoryScreen({ invoices }: Props) {
   const total = invoices.reduce((s, i) => s + i.total, 0);
 
   return (
-    <div className="flex flex-col gap-3 p-4 pb-24 max-w-[640px] mx-auto">
+    <div className="flex flex-col gap-3 p-4 pb-24 w-full max-w-[640px] mx-auto">
       <div className="px-1">
         <div className="text-[var(--color-violet)] text-[11px] tracking-widest">/history</div>
         <h1 className="mt-1 text-[22px] font-medium">{invoices.length} issued</h1>

@@ -203,7 +203,7 @@ export function NewInvoiceScreen({
   // ── PICK ────────────────────────────────────────────────────────────────
   if (mode === "pick-client") {
     return (
-      <div className="flex flex-col gap-3 p-4 pb-24 max-w-[640px] mx-auto">
+      <div className="flex flex-col gap-3 p-4 pb-24 w-full max-w-[640px] mx-auto">
         <div className="px-1">
           <div className="text-[var(--color-violet)] text-[11px] tracking-widest">
             /new {quickMode ? "· quick tv" : "· custom"}
@@ -293,7 +293,7 @@ export function NewInvoiceScreen({
   // ── FILL ────────────────────────────────────────────────────────────────
   if (mode === "fill" && selected) {
     return (
-      <div className="flex flex-col gap-3 p-4 pb-24 max-w-[640px] mx-auto">
+      <div className="flex flex-col gap-3 p-4 pb-24 w-full max-w-[640px] mx-auto">
         <div className="px-1">
           <div className="text-[var(--color-violet)] text-[11px] tracking-widest">/new · fill</div>
           <h1 className="mt-1 text-[22px] font-medium">
@@ -415,7 +415,7 @@ export function NewInvoiceScreen({
 
   // ── DONE ────────────────────────────────────────────────────────────────
   return (
-    <div className="flex flex-col gap-4 p-4 pb-24 max-w-[640px] mx-auto">
+    <div className="flex flex-col gap-4 p-4 pb-24 w-full max-w-[640px] mx-auto">
       <AnimatePresence>
         {lastIssued && (
           <motion.div
