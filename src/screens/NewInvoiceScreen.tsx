@@ -14,8 +14,9 @@ import {
   uid,
 } from "../lib/format";
 import { invoicePdfBlob } from "../lib/pdf";
-import { haptic, openExternal } from "../lib/tg";
+import { haptic } from "../lib/tg";
 import { InvoicePreview } from "../components/InvoicePreview";
+import { ZoomableArea } from "../components/ZoomableArea";
 
 type Props = {
   clients: Client[];
@@ -460,8 +461,13 @@ export function NewInvoiceScreen({
               </div>
             </Frame>
 
-            <Frame title="preview" accent="violet">
-              <InvoicePreview invoice={lastIssued} />
+            <Frame title="preview · pinch to zoom" accent="violet">
+              <ZoomableArea>
+                <InvoicePreview invoice={lastIssued} />
+              </ZoomableArea>
+              <div className="mt-2 text-[10px] text-[var(--color-fg-3)] text-center">
+                pinch with two fingers · double-tap to zoom
+              </div>
             </Frame>
 
             {pdfUrl ? (
@@ -471,10 +477,20 @@ export function NewInvoiceScreen({
                 </Button>
                 <button
                   type="button"
-                  onClick={() => pdfUrl && openExternal(pdfUrl)}
+                  onClick={() => {
+                    if (!pdfBlob || !lastIssued) return;
+                    // blob:// urls cannot be passed to Telegram.WebApp.openLink,
+                    // so just trigger a native download — the OS file viewer opens it.
+                    const a = document.createElement("a");
+                    a.href = pdfUrlRef.current ?? URL.createObjectURL(pdfBlob);
+                    a.download = pdfFileName(lastIssued);
+                    document.body.appendChild(a);
+                    a.click();
+                    a.remove();
+                  }}
                   className="inline-flex items-center justify-center gap-2 px-3 py-2 w-full bg-transparent hover:bg-[var(--color-ink-2)] text-[var(--color-fg-2)] hover:text-[var(--color-fg-0)] border border-[var(--color-ink-3)] rounded transition-colors text-[11px]"
                 >
-                  ↗ open raw pdf
+                  ⤓ download raw pdf
                 </button>
               </div>
             ) : pdfError ? (
