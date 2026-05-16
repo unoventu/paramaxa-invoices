@@ -110,7 +110,7 @@ export default function App() {
   if (!loaded || !settings) return <FullScreenSpinner label="loading state" />;
 
   return (
-    <div className="min-h-dvh flex flex-col text-[14px] w-full max-w-full overflow-x-hidden">
+    <div className="h-full flex flex-col text-[14px] w-full overflow-hidden">
       <TopBar
         back={
           screen !== "home"

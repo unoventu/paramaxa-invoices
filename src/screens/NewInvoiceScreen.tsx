@@ -465,7 +465,8 @@ export function NewInvoiceScreen({
                   <iframe
                     src={pdfUrl}
                     title="invoice preview"
-                    className="w-full h-[480px] bg-white rounded"
+                    className="block w-full bg-white rounded"
+                    style={{ aspectRatio: "400 / 720" }}
                   />
                 </Frame>
                 <Button variant="primary" block onClick={sendInvoice}>
