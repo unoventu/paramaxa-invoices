@@ -73,11 +73,20 @@ export function tgReady() {
   tg.setBackgroundColor?.("#08080a");
 }
 
+// Cached after first failure so we don't spam the console with the same
+// "not supported in version 6.0" warning for every tap.
+let hapticBroken = false;
+
 export function haptic(kind: "tap" | "ok" | "err" | "warn" = "tap") {
+  if (hapticBroken) return;
   const h = getTG()?.HapticFeedback;
   if (!h) return;
-  if (kind === "tap") h.impactOccurred("light");
-  if (kind === "ok") h.notificationOccurred("success");
-  if (kind === "err") h.notificationOccurred("error");
-  if (kind === "warn") h.notificationOccurred("warning");
+  try {
+    if (kind === "tap") h.impactOccurred("light");
+    else if (kind === "ok") h.notificationOccurred("success");
+    else if (kind === "err") h.notificationOccurred("error");
+    else if (kind === "warn") h.notificationOccurred("warning");
+  } catch {
+    hapticBroken = true;
+  }
 }
