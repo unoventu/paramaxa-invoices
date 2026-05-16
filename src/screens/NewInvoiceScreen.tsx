@@ -14,7 +14,8 @@ import {
   uid,
 } from "../lib/format";
 import { invoicePdfBlob } from "../lib/pdf";
-import { haptic } from "../lib/tg";
+import { haptic, openExternal } from "../lib/tg";
+import { InvoicePreview } from "../components/InvoicePreview";
 
 type Props = {
   clients: Client[];
@@ -459,19 +460,22 @@ export function NewInvoiceScreen({
               </div>
             </Frame>
 
+            <Frame title="preview" accent="violet">
+              <InvoicePreview invoice={lastIssued} />
+            </Frame>
+
             {pdfUrl ? (
               <div className="flex flex-col gap-3">
                 <Button variant="primary" block onClick={sendInvoice}>
                   📤 send invoice
                 </Button>
-                <a
-                  href={pdfUrl}
-                  target="_blank"
-                  rel="noreferrer"
+                <button
+                  type="button"
+                  onClick={() => pdfUrl && openExternal(pdfUrl)}
                   className="inline-flex items-center justify-center gap-2 px-3 py-2 w-full bg-transparent hover:bg-[var(--color-ink-2)] text-[var(--color-fg-2)] hover:text-[var(--color-fg-0)] border border-[var(--color-ink-3)] rounded transition-colors text-[11px]"
                 >
-                  ↗ open pdf preview
-                </a>
+                  ↗ open raw pdf
+                </button>
               </div>
             ) : pdfError ? (
               <div className="text-[11px] text-[var(--color-rose)] px-3 py-2 border border-[#5b1f29] rounded">

@@ -9,6 +9,7 @@ type TGCloudStorage = {
 type TGWebApp = {
   initData: string;
   initDataUnsafe?: { user?: { id: number; first_name?: string; username?: string } };
+  platform?: string;
   ready: () => void;
   expand: () => void;
   isExpanded?: boolean;
@@ -17,6 +18,7 @@ type TGWebApp = {
   enableClosingConfirmation?: () => void;
   requestFullscreen?: () => void;
   lockOrientation?: () => void;
+  openLink?: (url: string, opts?: { try_instant_view?: boolean }) => void;
   colorScheme: "light" | "dark";
   themeParams: Record<string, string>;
   setHeaderColor?: (color: string) => void;
@@ -76,6 +78,26 @@ export function tgReady() {
 // Cached after first failure so we don't spam the console with the same
 // "not supported in version 6.0" warning for every tap.
 let hapticBroken = false;
+
+export function tgPlatform(): string {
+  return getTG()?.platform ?? "unknown";
+}
+
+// Android Telegram WebView cannot render PDFs inside an iframe.
+// iOS / Telegram Desktop / Web can.
+export function canRenderPdfInIframe(): boolean {
+  const p = tgPlatform();
+  return p !== "android" && p !== "android_x";
+}
+
+export function openExternal(url: string) {
+  const tg = getTG();
+  if (tg?.openLink) {
+    tg.openLink(url);
+  } else {
+    window.open(url, "_blank", "noopener");
+  }
+}
 
 export function haptic(kind: "tap" | "ok" | "err" | "warn" = "tap") {
   if (hapticBroken) return;
